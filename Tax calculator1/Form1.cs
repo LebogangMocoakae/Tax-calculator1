@@ -17,9 +17,9 @@ namespace Tax_calculator1
         double above75Rebate = 9000+16425 + 2997;
         double taxAmountPA = 0;
         double rate = 0.18;
-        double bracket2Rate = 0.26, bracket2MoneyRate = 40680;
-
-
+        double bracket2Rate = 0.26, bracket2MoneyRate = 40680, bracket3MoneyRate=73726, bracket4MoneyRate=115762, bracket5MoneyRate=170734;
+        double bracket6MoneyRate = 239452, bracket7MoneyRate = 1731601;
+       
         public Form1()
         {
             InitializeComponent();
@@ -50,31 +50,41 @@ namespace Tax_calculator1
                 // tax rebates for people below 65 years old (below threshold)
                 if (age<65 && (pay * 12)<91250)
                 {
+                    int bracket = 1;
                     bracket1under65Threshold(age,pay);
+                    TaxCalThreshold(age, pay, bracket);
                 }
 
                 // tax rebates for people Above 65 years old and below 75
                 if (age>=65 && age<75 && (pay*12)>=141250)
                 {
+                    int bracket = 1;
                    bracket1for65to75(age,pay);
+                    TaxCal(age,pay,above65Below75Rebate,rate,bracket);
                 }
                 // tax rebates for people Above 65 years old and below 75 (below threshold)
                 if (age >= 65 && age < 75 && (pay * 12) < 141250)
                 {
+                    int bracket = 1;
                    bracket1for65to75Threshold(age,pay);
+                    TaxCalThreshold(age,pay, bracket);
                 }
 
                 // tax rebates for people Above 75
                 if (age >= 75 && (pay*12)>157900)
                 {
+                    int bracket = 1;
                     bracket1Above75(age, pay);
+                    TaxCal(age,pay, above75Rebate,rate,bracket);
 
                 }
 
                 //tax rebates for people Above 75 (below threshold)
                 if (age >= 75 && (pay * 12) < 157900)
                 {
+                    int bracket = 1;
                     bracket1above75Threshold(age, pay);
+                    TaxCalThreshold(age, pay, bracket);
                 }
 
 
@@ -87,11 +97,15 @@ namespace Tax_calculator1
                 // tax rebates for people below 65 years old
                 if (age < 65)
                 {
+
+                    double taxableIncome= (((pay * 12)*bracket2Rate)-40680)-normalRebate;
+                    double monthlyTax = (taxableIncome / 12);
+                    double uif = pay * 0.01;
+                    double netSalary = pay - monthlyTax;
                     MessageBox.Show("Tax bracket 2 (below 65)");
-                    taxAmountPA = ((pay * 12) * bracket2Rate) + bracket2MoneyRate;
-                    double taxedPay = 0;
-                    taxedPay = ((pay * 12) - taxAmountPA) / 12;
-                    MessageBox.Show("Tax Yearly Amount: R" + taxedPay);
+                    MessageBox.Show("R " + monthlyTax);
+                  
+                   // MessageBox.Show("Tax Yearly Amount: R" + totalTax);
 
                 }
                 // tax rebates for people Above 65 years old and below 75
@@ -166,6 +180,8 @@ namespace Tax_calculator1
         }
 
         //test methods////////////////////////////////////////////
+
+        //Paye calculator
         public void TaxCal(int age, double pay,double rebate,double rate,int bracket)
         {
             MessageBox.Show("Tax bracket "+bracket + " Age: "+ age);
@@ -178,6 +194,16 @@ namespace Tax_calculator1
             double paye = total - uif;
             MessageBox.Show("Tax Yearly Amount: R" + paye);
         }
+
+        //paye calculator (below threshold)
+        public void TaxCalThreshold(int age,double pay,int bracket)
+        {
+            MessageBox.Show("Tax bracket "+ bracket +" "+ age + " years old) and income tax does not apply: below Threshold");
+            double uif = pay * 0.01;
+            double paye = pay - uif;
+            MessageBox.Show("Tax Yearly Amount: R" + paye);
+        }
+
 
         // method for people Above 65 years old and below 75 (bracket1_
         public void bracket1for65to75(int age,double pay)
