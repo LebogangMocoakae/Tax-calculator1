@@ -98,7 +98,7 @@ namespace Tax_calculator1
                 if (age < 65)
                 {
 
-                    double taxableIncome= (((pay * 12)*bracket2Rate)-40680)-normalRebate;
+                    double taxableIncome= (((pay * 12)*bracket2Rate)+40680)-normalRebate;
                     double monthlyTax = (taxableIncome / 12);
                     double uif = pay * 0.01;
                     double netSalary = pay - monthlyTax;
